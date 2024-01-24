@@ -76,7 +76,7 @@ Errors are returned as JSON with a description of the issue.
 
 ## License
 
-This software and its source code are proprietary to Wealth Park. It may not be used, modified, distributed, or reproduced in any way without express permission. For more information on obtaining a license, please contact.
+This software and its source code are proprietary to Cassiano Tadao Yasumitsu. It may not be used, modified, distributed, or reproduced in any way without express permission. For more information on obtaining a license, please contact.
 
 
 
