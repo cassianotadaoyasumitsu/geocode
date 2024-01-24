@@ -1,0 +1,10 @@
+description: Check the health of the application
+responses:
+  200:
+    description: Returns OK if the application is running
+    schema:
+      type: object
+      properties:
+        status:
+          type: string
+          example: OK

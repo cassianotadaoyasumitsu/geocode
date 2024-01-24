@@ -1,0 +1,36 @@
+version: "3.7"
+
+x-service: &default-service
+  restart: always
+  logging:
+    driver: "json-file"
+    options:
+      max-size: "150m"
+      max-file: "6"
+
+services:
+  api:
+    <<: *default-service
+    container_name: "geocode-api"
+    build:
+      context: .
+    environment:
+      FLASK_APP: app.py
+      FLASK_ENV: production
+      FLASK_DEBUG: 0
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      CACHE_TTL: 300
+    ports:
+      - "35000:5000"
+    volumes:
+      - .:/app
+
+  redis:
+    <<: *default-service
+    container_name: 'geocode-redis'
+    image: 'public.ecr.aws/docker/library/redis:7.2.3-alpine3.18'
+    expose:
+      - '6379'
+    ports:
+      - '6379:6379'

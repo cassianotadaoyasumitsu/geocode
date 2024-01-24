@@ -1,0 +1,48 @@
+include:
+  - project: "hogwarts/gitlab-ci-templates"
+    ref: main
+    file: "/Presets/Conventional-Commits-Kubernetes-Single-App-Image-Update.gitlab-ci.yml"
+
+variables:
+  AWS_ECR_REGISTRY: "852331328592.dkr.ecr.ap-northeast-1.amazonaws.com/geocode"
+  AWS_ECR_REGION: "ap-northeast-1"
+  APP_NAME: "geocode"
+
+containerize:
+  needs:
+    - job: gen:versions
+      artifacts: true
+  variables:
+    KUBERNETES_SERVICE_CPU_REQUEST: "2"
+    KUBERNETES_SERVICE_CPU_LIMIT: "2"
+    KUBERNETES_SERVICE_MEMORY_REQUEST: "4Gi"
+    KUBERNETES_SERVICE_MEMORY_LIMIT: "4Gi"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH =~ /^feature\/.*$/'
+
+image-update:dev:
+  rules:
+    - when: never
+
+image-update:staging:
+  rules:
+    - when: never
+
+image-update:production:
+  rules:
+    - when: never
+
+image-update:shared-services:
+  extends:
+    - .image-update
+  environment:
+    name: "${APP_NAME}-shared-services"
+    deployment_tier: "production"
+  variables:
+    KUSTOMIZE_ENV: "shared-services"
+    IMAGE_URIS: "${AWS_ECR_REGISTRY}:${CONTAINER_TAG}"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH =~ /^feature\/.*$/'
+      when: manual

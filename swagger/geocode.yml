@@ -1,0 +1,95 @@
+description: Geocode an address using Google Maps API
+parameters:
+  - name: address
+    in: query
+    type: string
+    required: true
+    description: The address to geocode
+  - name: key
+    in: query
+    type: string
+    required: true
+    description: Your API key
+responses:
+  200:
+    description: The geocode result
+    schema:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              address_components:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    long_name:
+                      type: string
+                    short_name:
+                      type: string
+                    types:
+                      type: array
+                      items:
+                        type: string
+              formatted_address:
+                type: string
+              geometry:
+                type: object
+                properties:
+                  bounds:
+                    type: object
+                    properties:
+                      northeast:
+                        type: object
+                        properties:
+                          lat:
+                            type: number
+                          lng:
+                            type: number
+                      southwest:
+                        type: object
+                        properties:
+                          lat:
+                            type: number
+                          lng:
+                            type: number
+                  location:
+                    type: object
+                    properties:
+                      lat:
+                        type: number
+                      lng:
+                        type: number
+                  location_type:
+                    type: string
+                  viewport:
+                    type: object
+                    properties:
+                      northeast:
+                        type: object
+                        properties:
+                          lat:
+                            type: number
+                          lng:
+                            type: number
+                      southwest:
+                        type: object
+                        properties:
+                          lat:
+                            type: number
+                          lng:
+                            type: number
+              place_id:
+                type: string
+              types:
+                type: array
+                items:
+                  type: string
+        status:
+          type: string
+          example: OK
+  400:
+    description: Bad request, when parameters are missing
